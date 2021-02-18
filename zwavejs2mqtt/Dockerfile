@@ -28,7 +28,7 @@ RUN \
     \
     && curl -J -L -o /tmp/zwavejs.tar.gz \
         "https://github.com/zwave-js/node-zwave-js/archive/${ZWAVEJS_VERSION}.tar.gz" \
-    && mkdir /work/zwavejs \
+    && mkdir -p /work/zwavejs \
     && tar zxvf \
         /tmp/zwavejs.tar.gz \
         --strip 1 -C /work/zwavejs \
