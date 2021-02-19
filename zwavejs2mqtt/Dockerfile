@@ -39,12 +39,12 @@ RUN \
     && yarn install --production --frozen-lockfile \
     && for i in config core serial shared; do \
          cd packages/$i \
-         && yarn version --no-git-tag-version --new-version $(yarn versions --json | jq -r '[.data."@zwave-js/'${i}'"]'[0])-$(git rev-parse --short HEAD) \
+         && yarn version --no-git-tag-version --new-version $(yarn versions --json | jq -r '[.data."@zwave-js/'${i}'"]'[0])-$(git rev-parse --short HEAD || echo "${ZWAVEJS_VERSION:0:7}") \
          && yarn link \
          && cd ../..; \
        done \
     && cd packages/zwave-js \
-    && yarn version --no-git-tag-version --new-version $(yarn versions --json | jq -r '[.data."zwave-js"]'[0])-$(git rev-parse --short HEAD) \
+    && yarn version --no-git-tag-version --new-version $(yarn versions --json | jq -r '[.data."zwave-js"]'[0])-$(git rev-parse --short HEAD || echo "${ZWAVEJS_VERSION:0:7}") \
     && yarn link \
     \
     && curl -J -L -o /tmp/zwavejs2mqtt.tar.gz \
@@ -57,7 +57,7 @@ RUN \
     && yarn install --network-timeout=${YARN_NETWORK_TIMEOUT} \
     && yarn run build \
     && yarn install --production --frozen-lockfile \
-    && yarn version -s --no-git-tag-version --new-version $(yarn versions --json | jq -r .data.zwavejs2mqtt)+$(git rev-parse --short HEAD) \
+    && yarn version -s --no-git-tag-version --new-version $(yarn versions --json | jq -r .data.zwavejs2mqtt)+$(git rev-parse --short HEAD || echo "${ZWAVEJS2MQTT:0:7}") \
     && yarn link zwave-js @zwave-js/core @zwave-js/config @zwave-js/serial @zwave-js/shared \
     \
     && apk del --no-cache --purge .build-dependencies \
